@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>COVID-19 Tracker</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="jquery-3.5.1.min.js"></script>
+  <script src="Chart.bundle.js"></script>
+  <script src="script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  </head>
+  <body>
+  
+    <div class="tracker-container">
+        <p class="state"></p>
+        <p class="positive"></p>
+        <p class="incPos"></p>
+        <p class="totalTests"></p>
+    </div>
+
+
+
+<canvas id="myChart" width="100" height="30"></canvas>
+
+<script>
+
+//-----------Grab Graph Data----------------------
+var collectedData = [];
+var collectedLabels = [];
+var barData = [];
+var marchFixDate = "3/";
+var concatDate = 5;
+
+$.getJSON("https://covidtracking.com/api/v1/states/in/daily.json",
+function(graphData){
+    
+    var cap = graphData.length - 1;
+    for(let x in graphData){
+
+        
+        collectedData.push(graphData[cap - x].positive - graphData[cap - x].recovered - graphData[cap - x].death);
+        barData.push(graphData[cap - x].positiveIncrease);
+
+        //-------------Date---------
+        if (graphData[cap - x].lastUpdateEt == null){
+            graphData[cap - x] = "EEEEEEEEEEEE";
+        }
+         else {
+            var temp = graphData[cap - x].lastUpdateEt;
+            graphData[cap - x].lastUpdateEt = temp.slice(0,4);
+            temp = graphData[cap - x].lastUpdateEt; //grab new value
+
+            if (temp.charAt(3) == "/"){
+                graphData[cap - x].lastUpdateEt = temp.slice(0,3);
+            }
+        }
+        
+        collectedLabels.push((graphData[cap - x].lastUpdateEt) || marchFixDate + concatDate);
+        concatDate = concatDate+1;
+        
+        
+    }
+
+})
+//-------------------------------------------------
+
+//Chart.defaults.global.responsive = true;
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: collectedLabels,
+        datasets: [{
+            label: '# of Current Cases',
+            data: collectedData,
+            lineTension: 0,
+            fill: false,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+            type: 'line',
+            pointBackgroundColor: "red"
+
+            }, {
+
+                label: '# of New Diagnoses',
+                data: barData,
+                type: 'bar',
+                order: 1,
+                backgroundColor: "green"
+                
+        }]
+    },
+    options: {
+        fill: false,
+        responsive: true,
+        maintainAspectRatio: true,
+        
+        title: {
+            text: "Current Cases Since the Beginning of the Pandemic in Indiana",
+            display: true,
+        },
+        
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 5000,
+                    max: 35000,
+                    min: 0,
+                }
+            }],
+            xAxes: [{
+            ticks: {
+                callback: function(tick, index, array) {
+                    return (index % 14) ? "" : tick;
+                }
+            }
+        }]
+        }
+    }
+});
+
+</script>
+
+    <div class="hospital-container">
+        <p><b>Hospital Data</b></p>
+        <p class="currHospital"></p>
+        <p class="incHospital"></p>
+    </div>
+
+    <footer class="lastupdate"></footer>
+
+  </body>
+  
+</html>
