@@ -8,7 +8,8 @@
   <script src="Chart.bundle.js"></script>
   <script src="script.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  </head>
+  <link rel="shortcut icon" href="favicon.png">
+</head>
   <body>
   
     <div class="tracker-container">
@@ -63,6 +64,7 @@ function(graphData){
 
 })
 //-------------------------------------------------
+Chart.defaults.global.defaultFontColor = "#fff";
 
 //Chart.defaults.global.responsive = true;
 var ctx = document.getElementById('myChart').getContext('2d');
@@ -91,7 +93,7 @@ var myChart = new Chart(ctx, {
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 1,
+            borderWidth: 2,
             type: 'line',
             pointBackgroundColor: "red"
 
@@ -109,14 +111,16 @@ var myChart = new Chart(ctx, {
         fill: false,
         responsive: true,
         maintainAspectRatio: true,
-        
         title: {
             text: "Current Cases Since the Beginning of the Pandemic in Indiana",
             display: true,
-        },
-        
+        },        
         scales: {
             yAxes: [{
+                
+            gridLines: {
+                color: 'grey'
+            },
                 ticks: {
                     beginAtZero: true,
                     stepSize: 5000,
@@ -125,12 +129,16 @@ var myChart = new Chart(ctx, {
                 }
             }],
             xAxes: [{
+                
+            gridLines: {
+                color: 'grey'
+            },
             ticks: {
                 callback: function(tick, index, array) {
                     return (index % 14) ? "" : tick;
                 }
             }
-        }]
+        }],
         }
     }
 });

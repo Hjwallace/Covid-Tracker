@@ -1,12 +1,12 @@
 .tracker-container{
-    background: #272D98;
+    background: #950740;
     text-align: center;
     padding: 5px;
     border-radius: 30px;
 }
 
 .hospital-container{
-    background: #272D98;
+    background: #950740;
     text-align: center;
     padding: 5px;
     margin-top: 5px;
@@ -14,7 +14,7 @@
 }
 
 .lastupdate{
-    background: #272D98;
+    background: #950740;
     text-align: center;
     padding: 5px;
     margin-top: 5px;
@@ -29,6 +29,7 @@ canvas{
 }
 
 html {
-    background-color: #222222;
+    background-color: #1A1A1D;
     font-family: 'Roboto', sans-serif;
+    color: white;
 }
