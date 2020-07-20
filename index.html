@@ -109,12 +109,15 @@ var myChart = new Chart(ctx, {
     },
     options: {
         fill: false,
+        tooltips: {
+            mode: "index"
+        },
         responsive: true,
         maintainAspectRatio: true,
         title: {
             text: "Current Cases Since the Beginning of the Pandemic in Indiana",
             display: true,
-        },        
+        },      
         scales: {
             yAxes: [{
                 
