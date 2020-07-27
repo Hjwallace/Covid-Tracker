@@ -29,6 +29,7 @@
 var collectedData = [];
 var collectedLabels = [];
 var barData = [];
+var testingData = [];
 var marchFixDate = "3/";
 var concatDate = 5;
 
@@ -41,23 +42,13 @@ function(graphData){
         
         collectedData.push(graphData[cap - x].positive - graphData[cap - x].recovered - graphData[cap - x].death);
         barData.push(graphData[cap - x].positiveIncrease);
+        testingData.push(graphData[cap-x].totalTestResultsIncrease);
 
         //-------------Date---------
-        if (graphData[cap - x].lastUpdateEt == null){
-            graphData[cap - x] = "EEEEEEEEEEEE";
-        }
-         else {
-            var temp = graphData[cap - x].lastUpdateEt;
-            graphData[cap - x].lastUpdateEt = temp.slice(0,4);
-            temp = graphData[cap - x].lastUpdateEt; //grab new value
-
-            if (temp.charAt(3) == "/"){
-                graphData[cap - x].lastUpdateEt = temp.slice(0,3);
-            }
-        }
-        
-        collectedLabels.push((graphData[cap - x].lastUpdateEt) || marchFixDate + concatDate);
-        concatDate = concatDate+1;
+        var date = graphData[cap - x].date;
+        date = date.toString().slice(4,8);
+        date = date.slice(0,2) + "/" + date.slice(2,5);
+        collectedLabels.push( date || marchFixDate + concatDate);
         
         
     }
@@ -66,7 +57,7 @@ function(graphData){
 //-------------------------------------------------
 Chart.defaults.global.defaultFontColor = "#fff";
 
-//Chart.defaults.global.responsive = true;
+
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -105,7 +96,19 @@ var myChart = new Chart(ctx, {
                 order: 1,
                 backgroundColor: "green"
                 
-        }]
+        },{
+
+                label: '# of New Tests',
+                data: testingData,
+                type: 'line',
+                order: 1,
+                backgroundColor: "orange",
+                fill: false,
+                borderWidth: 1,
+                lineTension: 0,
+                borderColor: "orange",
+
+}]
     },
     options: {
         fill: false,
