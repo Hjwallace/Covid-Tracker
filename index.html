@@ -32,28 +32,34 @@ var barData = [];
 var testingData = [];
 var marchFixDate = "3/";
 var concatDate = 5;
+var totalAdjustForMax;
 
-$.getJSON("https://covidtracking.com/api/v1/states/in/daily.json",
+$.getJSON("https://api.covidtracking.com/v1/states/in/daily.json",
 function(graphData){
     
     var cap = graphData.length - 1;
+    var target;
     for(let x in graphData){
-
         
-        collectedData.push(graphData[cap - x].positive - graphData[cap - x].recovered - graphData[cap - x].death);
-        barData.push(graphData[cap - x].positiveIncrease);
-        testingData.push(graphData[cap-x].totalTestResultsIncrease);
+        target = cap-x;
+
+        collectedData.push(graphData[target].positive - graphData[target].recovered - graphData[target].death);
+        barData.push(graphData[target].positiveIncrease);
+        testingData.push(graphData[target].totalTestResultsIncrease);
 
         //-------------Date---------
-        var date = graphData[cap - x].date;
-        date = date.toString().slice(4,8);
-        date = date.slice(0,2) + "/" + date.slice(2,5);
-        collectedLabels.push( date || marchFixDate + concatDate);
+        var date = graphData[target].date.toString();
+
+        date = date.slice(4,6) + "/" + date.slice(6,8) + "/" + date.slice(0,4);
+
+        collectedLabels.push(date);
         
-        
+        totalAdjustForMax = graphData[target].positive - graphData[target].recovered - graphData[target].death;
     }
 
 })
+
+
 //-------------------------------------------------
 Chart.defaults.global.defaultFontColor = "#fff";
 
@@ -130,7 +136,7 @@ var myChart = new Chart(ctx, {
                 ticks: {
                     beginAtZero: true,
                     stepSize: 5000,
-                    max: 35000,
+                    max: totalAdjustForMax,
                     min: 0,
                 }
             }],
@@ -162,3 +168,5 @@ var myChart = new Chart(ctx, {
   </body>
   
 </html>
+
+

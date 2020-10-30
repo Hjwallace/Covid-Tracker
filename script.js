@@ -1,6 +1,6 @@
 
 
-$.getJSON("https://covidtracking.com/api/v1/states/in/current.json", 
+$.getJSON("https://api.covidtracking.com/v1/states/in/current.json", 
 function(data){
 
     //console.log(data);
@@ -16,13 +16,12 @@ function(data){
 
     $(".state").append("<b>State: </b>" + state);
     $(".lastupdate").append("<b>Last Updated: </b>" + lastupdate);
-    $(".positive").append("<b>Positive: </b>" + positive);
-    $(".incPos").append("<b>Latest New Cases in a Day: </b>" + incPos);
-    $(".totalTests").append("<b>Total Tests Conducted: </b>" + totalTests);
+    $(".positive").append("<b>Positive: </b>" + positive.toLocaleString());
+    $(".incPos").append("<b>Latest New Cases in a Day: </b>" + incPos.toLocaleString());
+    $(".totalTests").append("<b>Total Tests Conducted: </b>" + totalTests.toLocaleString());
 
-
-    $(".currHospital").append("<b>Current Hospital Cases: </b>" + currHospital);
-    $(".incHospital").append("<b>Latest New Hospital Cases: </b>" + incHospital);
+    $(".currHospital").append("<b>Current Hospital Cases: </b>" + currHospital.toLocaleString());
+    $(".incHospital").append("<b>Latest New Hospital Cases: </b>" + incHospital.toLocaleString());
 
 
 
