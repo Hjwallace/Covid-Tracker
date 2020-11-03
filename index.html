@@ -17,6 +17,7 @@
         <p class="positive"></p>
         <p class="incPos"></p>
         <p class="totalTests"></p>
+        <p class="recordNew"></p>
     </div>
 
 
@@ -35,6 +36,7 @@ var testingData = [];
 var marchFixDate = "3/";
 var concatDate = 5;
 var totalAdjustForMax;
+var recordNumber = 0;
 
 $.getJSON("https://api.covidtracking.com/v1/states/" + state + "/daily.json",
 function(graphData){
@@ -49,6 +51,10 @@ function(graphData){
         barData.push(graphData[target].positiveIncrease);
         testingData.push(graphData[target].totalTestResultsIncrease);
 
+        if (graphData[target].positiveIncrease > recordNumber){
+            recordNumber = graphData[target].positiveIncrease;
+        }
+
         //-------------Date---------
         var date = graphData[target].date.toString();
 
@@ -58,6 +64,9 @@ function(graphData){
         
         totalAdjustForMax = graphData[target].positive - graphData[target].recovered - graphData[target].death;
     }
+
+    $(".recordNew").append("<b>Most Cases in One Day: </b>" + recordNumber.toLocaleString());
+
 
 })
 
